@@ -1,0 +1,9 @@
+.terraform.lock.*
+terraform.tfstate.backup
+.terraform/*
+.terraform.*
+tf-packer
+tf-packer.pub
+terraform.tfstate
+manifest.json
+.terraform/

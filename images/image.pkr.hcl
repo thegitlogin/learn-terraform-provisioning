@@ -23,6 +23,9 @@ source "amazon-ebs" "example" {
     owners      = ["099720109477"]
   }
   ssh_username = "ubuntu"
+  tags = {
+    TagKey = "Packer-Terraform"
+  }
 }
 
 # a build block invokes sources and runs provisioning steps on them.
@@ -36,4 +39,11 @@ build {
   provisioner "shell" {
     script = "../scripts/setup.sh"
   }
+  post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
+  }
 }
+
+
+

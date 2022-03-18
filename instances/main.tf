@@ -76,7 +76,7 @@ resource "aws_security_group" "sg_22_80" {
 }
 
 resource "aws_instance" "web" {
-  ami                         = "ami-YOUR-AMI-ID"
+  ami                         = data.aws_ami.example.image_id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.subnet_public.id
   vpc_security_group_ids      = [aws_security_group.sg_22_80.id]
@@ -89,4 +89,18 @@ resource "aws_instance" "web" {
 
 output "public_ip" {
   value = aws_instance.web.public_ip
+}
+
+data "aws_ami" "example" {
+  most_recent = true
+  owners      = ["self"]
+
+  dynamic "filter" {
+    for_each = var.filter_tags
+    iterator = tag
+    content {
+      name   = "tag:${tag.key}"
+      values = ["${tag.value}"]
+    }
+  }
 }
